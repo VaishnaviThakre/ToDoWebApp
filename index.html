@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDo App</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link href="assets/css/styles.css" rel="stylesheet">
+
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center p-1">ToDo App</h1>
+        <h2 class="text-center p-2">Add a new task</h2>
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" id="taskInput" placeholder="Enter task" required>
+            <div class="input-group-append p-1">
+                <button id="addTask" class="btn btn-primary">Add</button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 pt-4">
+                <h2>Pending Tasks</h2>
+                <ul class="list-group" id="pendingTasks">
+                </ul>
+            </div>
+            <div class="col-md-6 pt-4">
+                <h2>Completed Tasks</h2>
+                <ul class="list-group" id="completedTasks">
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script>
+                const taskInput = document.getElementById('taskInput');
+        const pendingTasksList = document.getElementById('pendingTasks');
+        const completedTasksList = document.getElementById('completedTasks');
+        const addTaskButton = document.getElementById('addTask');
+
+        addTaskButton.addEventListener('click', () => {
+            const taskText = taskInput.value;
+            if (taskText.trim() === '') return;
+
+            const taskItem = document.createElement('li');
+            taskItem.className = 'list-group-item task';
+            taskItem.innerHTML = `
+                ${taskText}
+                <div>
+                    <button class="btn btn-success btn-sm complete-task">Complete</button>
+                    <button class="btn btn-danger btn-sm delete-task">Delete</button>
+                </div>
+            `;
+
+            taskInput.value = '';
+            pendingTasksList.appendChild(taskItem);
+        });
+
+        pendingTasksList.addEventListener('click', (e) => {
+            if (e.target.classList.contains('complete-task')) {
+                const taskItem = e.target.parentElement.parentElement;
+                completedTasksList.appendChild(taskItem);
+            }
+
+            if (e.target.classList.contains('delete-task')) {
+                const taskItem = e.target.parentElement.parentElement;
+                taskItem.remove();
+            }
+        });
+
+        completedTasksList.addEventListener('click', (e) => {
+            if (e.target.classList.contains('delete-task')) {
+                const taskItem = e.target.parentElement.parentElement;
+                taskItem.remove();
+            }
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
